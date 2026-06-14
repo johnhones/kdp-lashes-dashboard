@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Author Opportunity Audit — The Holy Grail of Lashes</title>
+<style>
+  :root {
+    --teal:     #00B5AD;
+    --teal-l:   #E0F7F6;
+    --teal-d:   #007A75;
+    --orange:   #F47421;
+    --orange-l: #FFF0E6;
+    --orange-d: #C05A10;
+    --navy:     #1B3A48;
+    --mid:      #4A6070;
+    --muted:    #7A909E;
+    --light:    #F5F7F8;
+    --border:   #DDE3E7;
+    --white:    #FFFFFF;
+    --black:    #111111;
+    --red:      #C62828;
+    --red-l:    #FFEBEE;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #ECEEF0;
+    color: var(--black);
+    line-height: 1.6;
+    font-size: 13px;
+  }
+
+  /* HEADER */
+  .hdr { background: var(--navy); color: #fff; padding: 40px 56px 32px; border-bottom: 4px solid var(--teal); }
+  .hdr-meta { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 10px; }
+  .hdr h1 { font-size: 30px; font-weight: 700; color: #fff; letter-spacing: -.3px; margin-bottom: 4px; }
+  .hdr h2 { font-size: 15px; color: rgba(255,255,255,.6); font-weight: 400; margin-bottom: 18px; }
+  .hdr-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .hdr-pill { display: inline-block; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); color: rgba(255,255,255,.75); padding: 4px 14px; border-radius: 3px; font-size: 11px; }
+  .hdr-pill.accent { background: var(--teal); border-color: var(--teal); color: #fff; font-weight: 600; }
+
+  /* LAYOUT */
+  .wrap { max-width: 1260px; margin: 0 auto; padding: 40px 32px; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .mb { margin-bottom: 24px; }
+  .mb-sm { margin-bottom: 14px; }
+
+  /* SECTION LABEL */
+  .sec-label { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); margin: 40px 0 16px; display: flex; align-items: center; gap: 12px; }
+  .sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* CARDS */
+  .card { background: var(--white); border-radius: 6px; padding: 28px 32px; border: 1px solid var(--border); }
+  .card-hdr { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--black); margin-bottom: 10px; line-height: 1.3; }
+
+  /* SCORE */
+  .score-panel { background: var(--navy); border-radius: 6px; padding: 32px; }
+  .score-eyebrow { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 12px; }
+  .score-num { font-size: 80px; font-weight: 900; color: var(--teal); line-height: 1; }
+  .score-denom { font-size: 28px; color: rgba(255,255,255,.3); font-weight: 300; }
+  .score-verdict { font-size: 18px; font-weight: 600; color: #fff; margin-top: 8px; }
+  .score-range { display: inline-block; margin-top: 10px; background: rgba(0,181,173,.12); border: 1px solid rgba(0,181,173,.3); color: var(--teal); padding: 4px 16px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 1px; }
+  .bar-row { margin-top: 28px; }
+  .bar-item { margin-bottom: 13px; }
+  .bar-item:last-child { margin-bottom: 0; }
+  .bar-meta { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .bar-lbl { font-size: 12px; color: rgba(255,255,255,.7); }
+  .bar-val { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.9); }
+  .bar-track { height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+
+  /* STAT STRIP */
+  .stat-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-top: 20px; }
+  .stat-cell { background: var(--white); padding: 16px; text-align: center; }
+  .stat-v { font-size: 20px; font-weight: 800; color: var(--navy); }
+  .stat-l { font-size: 10px; color: var(--muted); margin-top: 3px; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 3px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; }
+  .b-teal   { background: var(--teal-l);   color: var(--teal-d); }
+  .b-orange { background: var(--orange-l); color: var(--orange-d); }
+  .b-navy   { background: rgba(27,58,72,.08); color: var(--navy); }
+  .b-muted  { background: var(--light);    color: var(--muted); }
+
+  /* ITEMS */
+  .item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 20px; }
+  .item:last-child { margin-bottom: 0; }
+  .item-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+  .icon-teal   { background: var(--teal-l);   color: var(--teal-d); }
+  .icon-orange { background: var(--orange-l); color: var(--orange-d); }
+  .icon-navy   { background: rgba(27,58,72,.08); color: var(--navy); }
+  .item-t { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
+  .item-b { font-size: 12px; color: var(--mid); line-height: 1.6; }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid var(--teal); background: var(--teal-l); padding: 14px 18px; border-radius: 0 4px 4px 0; font-size: 12px; color: var(--navy); line-height: 1.65; }
+  .callout-orange { border-left-color: var(--orange); background: var(--orange-l); }
+  .callout strong { color: var(--black); }
+
+  /* TABLES */
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: var(--navy); color: rgba(255,255,255,.85); padding: 9px 12px; text-align: left; font-weight: 600; font-size: 10px; letter-spacing: .5px; text-transform: uppercase; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--mid); }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--light); }
+  .tc { text-align: center; } .tr { text-align: right; }
+
+  /* KW PILLS */
+  .kw { display: inline-block; background: var(--teal-l); color: var(--teal-d); border: 1px solid rgba(0,181,173,.2); border-radius: 3px; padding: 3px 10px; font-size: 11px; font-weight: 600; margin: 3px; }
+  .kw span { color: var(--teal-d); font-weight: 700; }
+
+  /* STEPS */
+  .step { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: 4px; margin-bottom: 10px; }
+  .step:last-child { margin-bottom: 0; }
+  .step-teal   { background: var(--teal-l);   border-left: 4px solid var(--teal); }
+  .step-orange { background: var(--orange-l); border-left: 4px solid var(--orange); }
+  .step-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; color: #fff; }
+  .num-teal   { background: var(--teal); }
+  .num-orange { background: var(--orange); }
+  .step-t { font-size: 13px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+  .step-b { font-size: 12px; color: var(--mid); line-height: 1.55; }
+
+  /* BANNER */
+  .banner { background: var(--navy); color: #fff; border-radius: 6px; padding: 24px 32px; margin-bottom: 24px; }
+  .banner h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #fff; }
+  .banner p  { font-size: 12px; color: rgba(255,255,255,.7); line-height: 1.65; }
+  .banner-stat { display: inline-block; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); color: #fff; padding: 6px 14px; border-radius: 3px; font-size: 12px; font-weight: 600; margin: 8px 6px 0 0; }
+
+  /* HARDBACK CARD */
+  .hb-card { background: var(--white); border: 1px solid var(--border); border-top: 4px solid var(--teal); border-radius: 6px; padding: 28px 32px; margin-bottom: 24px; }
+  .hb-eyebrow { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--teal-d); margin-bottom: 8px; }
+
+  /* ACTION REQUIRED */
+  .action-required { background: var(--red); color: #fff; border-radius: 6px; padding: 24px 32px; margin-top: 32px; display: flex; gap: 20px; align-items: flex-start; }
+  .ar-icon  { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .ar-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .ar-body  { font-size: 12px; color: rgba(255,255,255,.85); line-height: 1.65; }
+
+  /* FOOTER */
+  .ftr { background: var(--navy); color: rgba(255,255,255,.35); text-align: center; padding: 22px; font-size: 11px; }
+
+  @media(max-width:900px){
+    .g2{ grid-template-columns:1fr; }
+    .hdr{ padding:24px 20px; }
+    .wrap{ padding:24px 16px; }
+    .score-num{ font-size:56px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-meta">Author Opportunity Audit &nbsp;&middot;&nbsp; June 2026 &nbsp;&middot;&nbsp; Confidential</div>
+  <h1>The Holy Grail of Lashes</h1>
+  <h2>From Lash Newbie to Six Figure Pro</h2>
+  <div class="hdr-pills">
+    <span class="hdr-pill">Author: Nicola Vickers</span>
+    <span class="hdr-pill">Format: Kindle only</span>
+    <span class="hdr-pill">Niche: Professional Lash Artistry</span>
+    <span class="hdr-pill accent">Score: 69 / 100 &mdash; Good Opportunity</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- SCORE + SUMMARY -->
+<div class="g2 mb">
+  <div class="score-panel">
+    <div class="score-eyebrow">Author Opportunity Score</div>
+    <div><span class="score-num">69</span><span class="score-denom">&thinsp;/ 100</span></div>
+    <div class="score-verdict">Good Opportunity</div>
+    <div class="score-range">60 &ndash; 74 Range</div>
+    <div class="bar-row">
+      <div class="bar-item">
+        <div class="bar-meta"><span class="bar-lbl">Demand</span><span class="bar-val">14 / 20</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--teal);"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta"><span class="bar-lbl">Competition</span><span class="bar-val">16 / 20</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--teal);"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta"><span class="bar-lbl">Positioning</span><span class="bar-val">12 / 20</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--orange);"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta"><span class="bar-lbl">Discoverability</span><span class="bar-val">9 / 20</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--orange);"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta"><span class="bar-lbl">Expansion Potential</span><span class="bar-val">18 / 20</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--teal);"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <div class="card">
+      <div class="card-hdr">Book Summary</div>
+      <p style="font-size:13px;color:var(--mid);line-height:1.7;"><em>The Holy Grail of Lashes</em> is a guide for aspiring and professional lash technicians, written by Nicola Vickers &mdash; a specialist with 15+ years of industry experience. Currently available as Kindle only. Covering foundational lash technique through to advanced mastery and business building, it sits in a fast-growing niche with genuine commercial potential and very little direct competition.</p>
+      <div class="stat-strip">
+        <div class="stat-cell"><div class="stat-v">15+</div><div class="stat-l">Years Experience</div></div>
+        <div class="stat-cell"><div class="stat-v">Kindle</div><div class="stat-l">Current Format</div></div>
+        <div class="stat-cell"><div class="stat-v">499</div><div class="stat-l">Keywords Found</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hdr">Professional Assessment</div>
+      <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px;">The Holy Grail of Lashes has more commercial potential than the current listing status suggests. The niche is real, the keyword opportunity is significant, and the competition is thin. Once the listing is live and reviewed, Nicola is positioned to be one of very few credentialed authors in a growing and underserved space on Amazon.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <span class="badge b-teal">Evergreen Niche</span>
+        <span class="badge b-teal">Strong Credentials</span>
+        <span class="badge b-teal">Low Competition</span>
+        <span class="badge b-orange">No Reviews Yet</span>
+        <span class="badge b-orange">Hardback Needed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- KEY FINDING BANNER -->
+<div class="banner mb">
+  <h3>Key Finding &mdash; Under-Served Keyword with Real Demand</h3>
+  <p>Research shows fewer than 10 active listings for &ldquo;how to do eyelashes&rdquo; on Amazon &mdash; yet top books in the adjacent beauty category earn up to <strong style="color:#fff;">&#163;5,948 per month</strong>. This is a genuine gap Nicola is positioned to fill, both with her existing book and with new titles.</p>
+  <div>
+    <span class="banner-stat">&lt;10 Active Listings</span>
+    <span class="banner-stat">&#163;688 &ndash; &#163;5,948/mo Top Earners</span>
+    <span class="banner-stat">Low Ad Competition</span>
+    <span class="banner-stat">Evergreen Niche</span>
+  </div>
+</div>
+
+<!-- FORMAT RECOMMENDATION -->
+<div class="sec-label">Format Recommendation</div>
+<div class="hb-card mb">
+  <div class="hb-eyebrow">High Priority &mdash; Publish a Hardback Edition</div>
+  <div class="g2" style="gap:32px;align-items:start;">
+    <div>
+      <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:20px;">The book is currently Kindle only. Every top-performing competitor in the beauty and lash space is a hardback &mdash; and there is a clear commercial reason for that.</p>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Price it correctly to make it worthwhile</div>
+          <div class="item-b">KDP Print books have a minimum list price based on page count and trim size. The royalty is 60% of the list price minus the printing cost &mdash; so to clear at least $5 per copy, the book needs to be priced high enough to cover KDP&rsquo;s printing fee and still leave that margin on top. In a professional niche where buyers expect to pay for specialist content, a higher price point is entirely justified.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Technique books are reference books &mdash; professionals want them in print</div>
+          <div class="item-b">Lash technicians and beauty professionals use guides on the job. A physical hardback sits on a shelf, gets flipped to mid-appointment, and gets recommended to colleagues. A Kindle edition does not serve that use case in the same way.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Hardbacks perform better in Amazon Ads</div>
+          <div class="item-b">Sponsored Products campaigns for physical books have higher click-through and conversion rates in the beauty category. The book cover is the ad &mdash; a hardback carries far more visual weight in search results than a Kindle thumbnail.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Both formats appear on the same listing</div>
+          <div class="item-b">Once the hardback is live, both formats appear on the same Amazon product page. Buyers choose their preferred format &mdash; and Nicola earns from both.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;">All Top Competitors Are Hardbacks</p>
+      <table style="margin-bottom:16px;">
+        <thead><tr><th>Title</th><th class="tc">Format</th><th class="tr">Rev / Mo</th></tr></thead>
+        <tbody>
+          <tr><td>My Creative Diary (top performer)</td><td class="tc"><span class="badge b-teal">Hardback</span></td><td class="tr" style="color:var(--teal-d);font-weight:700;">&#163;5,948</td></tr>
+          <tr><td>The Make-up Manual</td><td class="tc"><span class="badge b-teal">Hardback</span></td><td class="tr">&#163;688</td></tr>
+          <tr><td>Makeup Practice Book</td><td class="tc"><span class="badge b-teal">Hardback</span></td><td class="tr">&#163;631</td></tr>
+          <tr><td>Bobbi Brown Makeup Manual</td><td class="tc"><span class="badge b-teal">Hardback</span></td><td class="tr">&#163;480</td></tr>
+          <tr><td>Masters of Make-Up Effects</td><td class="tc"><span class="badge b-teal">Hardback</span></td><td class="tr">&#163;224</td></tr>
+          <tr><td style="font-weight:700;">The Holy Grail of Lashes</td><td class="tc"><span class="badge b-orange">Kindle Only</span></td><td class="tr" style="color:var(--orange-d);">Not yet</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">
+        <strong>The takeaway:</strong> Every book earning meaningful revenue in this space is a hardback. Publishing a hardback edition is not an optional extra &mdash; it is the format the market is buying in.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STRENGTHS + GROWTH -->
+<div class="sec-label">Strengths &amp; Growth Opportunities</div>
+<div class="g2 mb">
+  <div class="card">
+    <div class="card-hdr">What Is Working Well</div>
+    <div class="item">
+      <div class="item-icon icon-teal">&#10003;</div>
+      <div>
+        <div class="item-t">Compelling title with income appeal</div>
+        <div class="item-b">&ldquo;From Lash Newbie to Six Figure Pro&rdquo; speaks directly to beauty students and working technicians. The income-framing is a proven hook in the beauty education market.</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-icon icon-teal">&#10003;</div>
+      <div>
+        <div class="item-t">Fewer than 10 competitors for the core keyword</div>
+        <div class="item-b">&ldquo;How to do eyelashes&rdquo; is an active search term with almost no competing titles &mdash; an unusual and genuinely exciting opportunity for a book with real authority behind it.</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-icon icon-teal">&#10003;</div>
+      <div>
+        <div class="item-t">Evergreen professional niche</div>
+        <div class="item-b">Lash artistry continues to grow as a career. Training content has a long shelf life and Nicola&rsquo;s 15+ years of hands-on experience gives this book authority competitors cannot easily replicate.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr">Growth Opportunities</div>
+    <div class="item">
+      <div class="item-icon icon-orange">&rarr;</div>
+      <div>
+        <div class="item-t">Fix the listing &mdash; then move quickly</div>
+        <div class="item-b">Once live, the book enters a keyword space with very few competitors. Every week the listing is inactive is a week someone else could publish into the same gap.</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-icon icon-orange">&rarr;</div>
+      <div>
+        <div class="item-t">Build reviews to claim the gap</div>
+        <div class="item-b">Top books in the adjacent makeup category carry hundreds to thousands of reviews. In the lash-specific space, a book with even 15&ndash;20 genuine reviews would stand out immediately.</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-icon icon-teal">&uarr;</div>
+      <div>
+        <div class="item-t">Expand into additional titles</div>
+        <div class="item-b">Fewer than 10 listings for &ldquo;how to do eyelashes&rdquo; and clear demand makes a strong case for a beginner&rsquo;s lash guide, a DIY workbook, or a lash business handbook. Each new title adds revenue and catalogue authority.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEW BOOK OPPORTUNITY — LASH -->
+<div class="sec-label">New Book Opportunity &mdash; Lash Niche</div>
+<div class="card mb">
+  <div class="g2" style="gap:32px;align-items:start;">
+    <div>
+      <div class="card-title">How to Do Eyelashes &mdash; A Keyword Gap with Real Demand</div>
+      <div class="callout" style="margin-bottom:16px;">
+        <strong>The opportunity:</strong> Fewer than 10 active listings on Amazon for &ldquo;how to do eyelashes&rdquo; &mdash; yet top books in the adjacent beauty space earn between &#163;224 and &#163;5,948 per month. Nicola&rsquo;s expertise puts her in the strongest possible position to publish here with genuine authority.
+      </div>
+      <p style="font-size:12px;color:var(--mid);margin-bottom:16px;">Suggested titles to consider alongside the existing book:</p>
+      <div class="item">
+        <div class="item-icon icon-teal">1</div>
+        <div>
+          <div class="item-t">Beginner&rsquo;s Eyelash Guide</div>
+          <div class="item-b">Targets &ldquo;how to do eyelashes&rdquo; and &ldquo;easy eyelash techniques for beginners&rdquo; &mdash; directly addresses the biggest keyword gap identified.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">2</div>
+        <div>
+          <div class="item-t">Step-by-Step Lash Application Workbook</div>
+          <div class="item-b">Practical illustrated format. Well-suited to Amazon&rsquo;s how-to and illustrated guide category. Low-competition keyword set.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">3</div>
+        <div>
+          <div class="item-t">Lash Business Starter Guide</div>
+          <div class="item-b">Targets beauty students wanting to turn lash skills into income. Complements the existing book&rsquo;s Six Figure Pro angle and expands catalogue reach.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;">Competitor Revenue &mdash; Adjacent Category</p>
+      <table style="margin-bottom:12px;">
+        <thead><tr><th>Book</th><th class="tc">BSR</th><th class="tr">Rev / Mo</th><th class="tc">Reviews</th></tr></thead>
+        <tbody>
+          <tr><td><strong>My Creative Diary</strong> <span class="badge b-teal" style="font-size:9px;">Top</span></td><td class="tc">561</td><td class="tr" style="color:var(--teal-d);font-weight:700;">&#163;5,948</td><td class="tc">210</td></tr>
+          <tr><td>The Make-up Manual</td><td class="tc">14,759</td><td class="tr">&#163;688</td><td class="tc">1,060</td></tr>
+          <tr><td>Makeup Practice Book</td><td class="tc">11,073</td><td class="tr">&#163;631</td><td class="tc">322</td></tr>
+          <tr><td>Bobbi Brown Makeup Manual</td><td class="tc">30,964</td><td class="tr">&#163;480</td><td class="tc">2,761</td></tr>
+          <tr><td>Masters of Make-Up Effects</td><td class="tc">123,602</td><td class="tr">&#163;224</td><td class="tc">343</td></tr>
+          <tr><td>Makeup Tutorial for Teens</td><td class="tc">182,431</td><td class="tr" style="color:var(--muted);">Low</td><td class="tc">4</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:10px;color:var(--muted);font-style:italic;">These are general makeup titles, not lash-specific. The lash keyword space has fewer than 10 listings.</p>
+    </div>
+  </div>
+</div>
+
+<!-- MAKEUP MANUAL -->
+<div class="sec-label">Additional Book Opportunity &mdash; Makeup Manual</div>
+<div class="card mb" style="border-top:4px solid var(--orange);">
+  <div class="g2" style="gap:32px;align-items:start;">
+    <div>
+      <div class="card-title">Makeup Manual &mdash; Nicola&rsquo;s Biggest Untapped Market</div>
+      <div class="callout callout-orange" style="margin-bottom:18px;">
+        <strong>Only 2 serious competitors.</strong> Nicola is a qualified beauty therapist &mdash; she already has the knowledge and credibility to write a makeup manual. The Make-up Manual earns &#163;688/mo and Bobbi Brown earns &#163;480/mo, both with thousands of reviews built over years. A well-written, well-positioned alternative from a practising beauty therapist could enter this space today.
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Only 2 established makeup manuals dominate the space</div>
+          <div class="item-b">The Make-up Manual (1,060 reviews) and Bobbi Brown (2,761 reviews) are the main players. A credible third option with modern, practitioner-led positioning is missing from the market.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Nicola&rsquo;s beauty therapy credentials are the differentiator</div>
+          <div class="item-b">Both existing manuals lean on brand name or lifestyle angle. A book written from a professional beauty therapist&rsquo;s perspective &mdash; practical, technique-led, accessible &mdash; is a genuine gap.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-teal">&#10003;</div>
+        <div>
+          <div class="item-t">Confirmed keyword demand</div>
+          <div class="item-b">&ldquo;Make up practice book&rdquo; returns 2,002 Amazon searches per month. &ldquo;Make up practice book for kids&rdquo; returns 1,162/mo. Adjacent search demand is significant and consistent.</div>
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon icon-navy">&rarr;</div>
+        <div>
+          <div class="item-t">Possible title angles</div>
+          <div class="item-b">A Professional&rsquo;s Guide to Everyday Makeup &middot; The Beauty Therapist&rsquo;s Makeup Manual &middot; Makeup Masterclass: Techniques from a Professional Beauty Therapist</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;">Makeup Manual Competitor Breakdown</p>
+      <table style="margin-bottom:16px;">
+        <thead><tr><th>Title</th><th class="tc">BSR</th><th class="tr">Rev / Mo</th><th class="tc">Reviews</th></tr></thead>
+        <tbody>
+          <tr><td><strong>The Make-up Manual</strong></td><td class="tc">14,759</td><td class="tr" style="color:var(--teal-d);font-weight:700;">&#163;688</td><td class="tc">1,060</td></tr>
+          <tr><td>Bobbi Brown Makeup Manual</td><td class="tc">30,964</td><td class="tr" style="color:var(--teal-d);font-weight:700;">&#163;480</td><td class="tc">2,761</td></tr>
+          <tr><td>Makeup Practice Book</td><td class="tc">11,073</td><td class="tr">&#163;631</td><td class="tc">322</td></tr>
+          <tr><td>Makeup Tutorial for Teens</td><td class="tc">182,431</td><td class="tr" style="color:var(--muted);">Low</td><td class="tc">4</td></tr>
+        </tbody>
+      </table>
+      <div class="callout" style="margin-bottom:16px;">
+        <strong>The gap:</strong> The Makeup Practice Book earns &#163;631/mo with only 322 reviews &mdash; nearly on par with The Make-up Manual (1,060 reviews). This shows buyers don&rsquo;t need a market-leader review count to sell well here. A book with 50&ndash;100 strong reviews could compete effectively.
+      </div>
+      <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;">Makeup Keywords to Target</p>
+      <span class="kw">make up practice book <span>2,002/mo</span></span>
+      <span class="kw">makeup manual for beginners</span>
+      <span class="kw">beauty therapist makeup guide</span>
+      <span class="kw">professional makeup techniques book</span>
+      <span class="kw">make up book for adults</span>
+    </div>
+  </div>
+</div>
+
+<!-- ADS + KEYWORDS -->
+<div class="sec-label">Advertising &amp; Keyword Strategy</div>
+<div class="g2 mb">
+  <div class="card">
+    <div class="card-hdr">Amazon Paid Advertising Opportunity</div>
+    <div class="callout" style="margin-bottom:18px;">
+      <strong>Low competition = low cost-per-click.</strong> Google shows &ldquo;how to do&rdquo; beauty keywords at just $3.34 CPC with a Low competition rating. On Amazon, where even fewer titles are bidding, a modest budget delivers outsized reach.
+    </div>
+    <div class="item">
+      <div class="item-icon icon-orange">1</div>
+      <div>
+        <div class="item-t">Start with Sponsored Products &mdash; Auto</div>
+        <div class="item-b">Let Amazon find the best-converting keywords in weeks 1&ndash;4. Budget: &#163;5&ndash;10/day to start.</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-icon icon-orange">2</div>
+      <div>
+        <div class="item-t">Add manual campaigns after 4 weeks</div>
+        <div class="item-b">Bid specifically on &ldquo;how to do eyelashes&rdquo;, &ldquo;lash extension training&rdquo;, and lash business keywords identified in this audit.</div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="item-icon icon-orange">3</div>
+      <div>
+        <div class="item-t">Target 30&ndash;40% ACOS</div>
+        <div class="item-b">In a low-competition niche, this is very achievable and profitable. Monitor weekly and optimise bids against top-converting keywords.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr">Keyword Strategy &mdash; Existing Book</div>
+    <p style="font-size:12px;color:var(--mid);margin-bottom:14px;">Target these in all 7 Amazon backend keyword fields and in the book description.</p>
+    <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Priority Targets &mdash; Low Competition</p>
+    <div style="margin-bottom:14px;">
+      <span class="kw">how to do eyelashes <span>&lt;10 listings</span></span>
+      <span class="kw">easy to do eyelashes <span>1,711/mo</span></span>
+      <span class="kw">lash extension training book</span>
+      <span class="kw">eyelash extension manual</span>
+    </div>
+    <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Professional Niche Keywords</p>
+    <div style="margin-bottom:14px;">
+      <span class="kw">lash technician guide</span>
+      <span class="kw">lash artist training</span>
+      <span class="kw">lash business book</span>
+      <span class="kw">lash extension for beginners</span>
+    </div>
+    <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;">Google / Cross-Platform</p>
+    <div style="margin-bottom:14px;">
+      <span class="kw">how to do &mdash; beauty <span>60,500/mo</span></span>
+      <span class="badge b-navy" style="margin:3px;">$3.34 CPC</span>
+      <span class="badge b-teal" style="margin:3px;">Low Competition</span>
+    </div>
+    <p style="font-size:10px;color:var(--muted);font-style:italic;">Validate all volumes in BookBolt before committing. 499 Amazon + 320 Google keywords identified in research.</p>
+
+    <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
+      <p style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;">Self-Assessment Signals</p>
+      <table>
+        <thead><tr><th>Signal</th><th class="tc">Status</th></tr></thead>
+        <tbody>
+          <tr><td>Cover readable at thumbnail</td><td class="tc"><span class="badge b-teal">Yes</span></td></tr>
+          <tr><td>Evergreen / trending topic</td><td class="tc"><span class="badge b-teal">Yes</span></td></tr>
+          <tr><td>Clear target audience</td><td class="tc"><span class="badge b-teal">Yes</span></td></tr>
+          <tr><td>Can compete on value</td><td class="tc"><span class="badge b-teal">Yes</span></td></tr>
+          <tr><td>Books BSR &lt;50k exist (demand proof)</td><td class="tc"><span class="badge b-teal">Many</span></td></tr>
+          <tr><td>Search result pages (main keyword)</td><td class="tc"><span class="badge b-navy">1&ndash;2 Pages</span></td></tr>
+          <tr><td>Price aligned with market</td><td class="tc"><span class="badge b-orange">Not Confirmed</span></td></tr>
+          <tr><td>Cover stands out in niche</td><td class="tc"><span class="badge b-orange">Not Confirmed</span></td></tr>
+          <tr><td>Current reviews / ratings</td><td class="tc"><span class="badge b-orange">None</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT STEPS -->
+<div class="sec-label">Recommended Next Steps</div>
+<div class="card mb">
+  <div class="card-hdr">Ranked by Priority</div>
+  <div class="step step-teal">
+    <div class="step-num num-teal">1</div>
+    <div>
+      <div class="step-t">Publish a hardback edition of The Holy Grail of Lashes</div>
+      <div class="step-b">Every top-performing competitor is a hardback. This is the format buyers in this niche expect and purchase. KDP makes it straightforward to add a hardback alongside the existing Kindle listing &mdash; both then appear on the same Amazon product page.</div>
+    </div>
+  </div>
+  <div class="step step-orange">
+    <div class="step-num num-orange">2</div>
+    <div>
+      <div class="step-t">Reoptimise the Amazon listing end-to-end</div>
+      <div class="step-b">Switch to lash-specific categories, rewrite the description for lash professionals, and load all seven backend keyword fields from the keyword list in this audit.</div>
+    </div>
+  </div>
+  <div class="step step-orange">
+    <div class="step-num num-orange">3</div>
+    <div>
+      <div class="step-t">Build reviews through a structured campaign</div>
+      <div class="step-b">Reach out to 15&ndash;20 lash technicians or beauty students for advance copies. Target verified purchase reviews. Even five will meaningfully improve conversion rate.</div>
+    </div>
+  </div>
+  <div class="step step-orange">
+    <div class="step-num num-orange">4</div>
+    <div>
+      <div class="step-t">Launch a low-budget Amazon Ads campaign</div>
+      <div class="step-b">Once live with some reviews, start a Sponsored Products campaign at &#163;5&ndash;10/day targeting the lash keywords identified here. Low competition means affordable and effective.</div>
+    </div>
+  </div>
+  <div class="step step-teal">
+    <div class="step-num num-teal">5</div>
+    <div>
+      <div class="step-t">Plan a second book &mdash; the lash keyword gap and a makeup manual</div>
+      <div class="step-b">Fewer than 10 listings for the lash keyword, and only 2 serious makeup manual competitors. Nicola&rsquo;s credentials make her the ideal author for both. A small, focused catalogue is the longer-term strategy.</div>
+    </div>
+  </div>
+</div>
+
+<!-- JOHN'S OBSERVATION -->
+<div class="sec-label">John&rsquo;s Observation</div>
+<div class="card mb">
+  <p style="font-size:13px;color:var(--mid);line-height:1.85;">Nicola, the opportunity here is bigger than this single book. You have 15+ years of expertise across lash artistry and beauty therapy &mdash; and the data shows two clear markets where you are positioned to compete with very little opposition. The most immediate fix is also one of the simplest: publishing a hardback edition. Every book making serious money in your category is a hardback, and buyers in this space want a physical reference they can use on the job. Beyond that, getting your listing live, building reviews, and eventually expanding into a beginner lash guide and a beauty therapist makeup manual would give you a focused professional beauty catalogue that compounds in visibility over time. The steps are clear, the gaps are real, and the path is genuinely promising.</p>
+</div>
+
+<!-- ACTION REQUIRED (bottom) -->
+<div class="action-required">
+  <div class="ar-icon">&#9888;&#65039;</div>
+  <div>
+    <div class="ar-title">Action Required &mdash; Listing Currently Unavailable on Amazon</div>
+    <div class="ar-body">No traffic, no sales, and no ads can run until this is fixed. Contact KDP support to resolve the &ldquo;Currently Unavailable&rdquo; status as an immediate priority. Once live, Nicola enters a space with fewer than 10 competitors for the core keyword &mdash; fix this first and move quickly before someone else publishes into the gap.</div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<div class="ftr">
+  Author Opportunity Audit &nbsp;&middot;&nbsp; The Holy Grail of Lashes &nbsp;&middot;&nbsp; June 2026 &nbsp;&middot;&nbsp; Confidential
+</div>
+
+</body>
+</html>
