@@ -154,6 +154,12 @@
   .tip-box { display: none; position: absolute; left: 0; bottom: calc(100% + 8px); background: #fff; color: #1B3A48; font-size: 11px; line-height: 1.55; padding: 9px 12px; border-radius: 4px; width: 210px; box-shadow: 0 4px 20px rgba(0,0,0,.25); z-index: 100; pointer-events: none; }
   .tip-box::after { content: ''; position: absolute; top: 100%; left: 8px; border: 5px solid transparent; border-top-color: #fff; }
   .tip:hover .tip-box { display: block; }
+
+  /* STICKY NAV */
+  .site-nav { position:sticky; top:0; z-index:200; background:#142e3a; border-bottom:1px solid rgba(255,255,255,.08); display:flex; overflow-x:auto; }
+  .site-nav a { display:inline-flex; align-items:center; color:rgba(255,255,255,.5); font-size:11px; font-weight:600; letter-spacing:.4px; padding:12px 16px; text-decoration:none; border-bottom:2px solid transparent; white-space:nowrap; transition:color .15s,border-color .15s; flex-shrink:0; }
+  .site-nav a:hover { color:#00B5AD; border-bottom-color:rgba(0,181,173,.4); }
+  [id] { scroll-margin-top:48px; }
 </style>
 </head>
 <body>
@@ -169,8 +175,16 @@
     <span class="hdr-pill accent">Score: 69 / 100 - Good Opportunity</span>
   </div>
 </div>
+<nav class="site-nav">
+  <a href="#score">Opportunity Score</a>
+  <a href="#market">Market Analysis</a>
+  <a href="#keywords">Keywords</a>
+  <a href="#competitors">Competitors</a>
+  <a href="#marketing">Marketing Strategy</a>
+  <a href="#quick-wins">Quick Wins</a>
+</nav>
 
-<div class="wrap">
+<div class="wrap" id="score">
 
 <!-- SCORE + SUMMARY -->
 <div class="g2 mb">
@@ -248,6 +262,7 @@
 </div>
 
 <!-- FORMAT RECOMMENDATION -->
+<div id="marketing" style="position:relative;top:-48px;"></div>
 <div class="sec-label">Format Recommendation</div>
 <div class="hb-card mb">
   <div class="hb-eyebrow">High Priority - Publish a Hardback Edition</div>
@@ -304,6 +319,7 @@
 </div>
 
 <!-- STRENGTHS + GROWTH -->
+<div id="market" style="position:relative;top:-48px;"></div>
 <div class="sec-label">Strengths &amp; Growth Opportunities</div>
 <div class="g2 mb">
   <div class="card">
@@ -358,6 +374,7 @@
 </div>
 
 <!-- NEW BOOK OPPORTUNITY - LASH -->
+<div id="competitors" style="position:relative;top:-48px;"></div>
 <div class="sec-label">New Book Opportunity - Lash Niche</div>
 <div class="card mb">
   <div class="g2" style="gap:32px;align-items:start;">
@@ -470,6 +487,7 @@
 </div>
 
 <!-- ADS + KEYWORDS -->
+<div id="keywords" style="position:relative;top:-48px;"></div>
 <div class="sec-label">Advertising &amp; Keyword Strategy</div>
 <div class="g2 mb">
   <div class="card">
@@ -546,6 +564,7 @@
 </div>
 
 <!-- NEXT STEPS -->
+<div id="quick-wins" style="position:relative;top:-48px;"></div>
 <div class="sec-label">Recommended Next Steps</div>
 <div class="card mb">
   <div class="card-hdr">Ranked by Priority</div>
