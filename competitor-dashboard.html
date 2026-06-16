@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Readabull — Competitor Analysis Dashboard</title>
+<style>
+  :root {
+    --teal:       #00B8B8;
+    --teal-dark:  #008F8F;
+    --teal-light: #E6F9F9;
+    --orange:     #F47920;
+    --orange-dark:#C45F10;
+    --navy:       #1A3347;
+    --white:      #FFFFFF;
+    --light:      #F4FAFA;
+    --border:     #D1EDED;
+    --text:       #1A3347;
+    --muted:      #5A7A8A;
+    --red:        #CC2200;
+    --red-bg:     #FEE2E2;
+    --amber:      #92400E;
+    --amber-bg:   #FEF3C7;
+    --green:      #166534;
+    --green-bg:   #DCFCE7;
+    --radius:     10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    background: var(--light);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    padding: 14px 20px 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .logo-svg { width: 44px; height: 44px; flex-shrink: 0; }
+  .header-text { flex: 1; }
+  .header-title {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.3px;
+  }
+  .title-reada { color: var(--teal); }
+  .title-bull  { color: var(--orange); }
+  .header-sub {
+    font-size: 10px;
+    color: #94A3B8;
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+  .header-badge {
+    background: var(--orange);
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  /* ── TABS ── */
+  .tab-bar {
+    display: flex;
+    background: var(--navy);
+    padding: 0 16px;
+    gap: 2px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 3px solid var(--teal);
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 10px 13px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #7AA8B8;
+    background: none;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all 0.15s;
+    letter-spacing: 0.2px;
+  }
+  .tab-btn.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding: 16px; }
+  .panel.active { display: block; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,184,184,0.08);
+  }
+  .card-header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-header.teal { background: var(--teal-dark); }
+  .card-body { padding: 14px 16px; }
+
+  /* ── KPI ROW ── */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .kpi {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: 0 1px 4px rgba(0,184,184,0.08);
+  }
+  .kpi-val {
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--teal-dark);
+    line-height: 1.1;
+  }
+  .kpi-val.orange { color: var(--orange); }
+  .kpi-label {
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    flex-shrink: 0;
+  }
+  .badge-high    { background: var(--red-bg);    color: var(--red); }
+  .badge-medium  { background: var(--amber-bg);   color: var(--amber); }
+  .badge-low     { background: var(--green-bg);   color: var(--green); }
+  .badge-teal    { background: var(--teal);        color: var(--white); }
+  .badge-orange  { background: var(--orange);      color: var(--white); }
+
+  /* ── DETAIL ROWS ── */
+  .detail-row {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    gap: 12px;
+  }
+  .detail-row:last-child { border-bottom: none; }
+  .detail-label {
+    font-weight: 700;
+    color: var(--teal-dark);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    min-width: 120px;
+    flex-shrink: 0;
+    padding-top: 1px;
+  }
+  .detail-val {
+    color: var(--text);
+    font-size: 13px;
+    flex: 1;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-title {
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    color: var(--white);
+    padding: 7px 16px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin: 0 -16px 12px;
+  }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    background: var(--teal-light);
+    border: 1px solid var(--teal);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: var(--teal-dark);
+    font-weight: 700;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    background: var(--teal);
+    color: var(--white);
+    font-weight: 800;
+    padding: 10px 12px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 11px;
+    letter-spacing: 0.3px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: var(--teal-light); }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── FUNNEL ── */
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 8px 0;
+  }
+  .funnel-step {
+    background: var(--navy);
+    color: var(--white);
+    text-align: center;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    width: 100%;
+  }
+  .funnel-step.teal   { background: var(--teal-dark); }
+  .funnel-step.orange { background: var(--orange); }
+  .funnel-arrow {
+    color: var(--teal);
+    font-size: 20px;
+    line-height: 1;
+    margin: 2px 0;
+    font-weight: 900;
+  }
+
+  /* ── SCORE BARS ── */
+  .score-item { margin-bottom: 12px; }
+  .score-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .score-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .score-num  { font-size: 12px; font-weight: 900; color: var(--teal-dark); }
+  .score-bar-bg {
+    background: var(--teal-light);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .score-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--teal-dark), var(--orange));
+  }
+
+  /* ── INSIGHT BOX ── */
+  .insight {
+    background: var(--teal-light);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .insight strong { color: var(--teal-dark); }
+
+  /* ── WIN BOX ── */
+  .win-box {
+    background: linear-gradient(135deg, var(--navy), #1A4A5A);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--orange);
+  }
+  .win-box-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--orange);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .win-box-text {
+    font-size: 13px;
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  /* ── PLACEHOLDER ── */
+  .placeholder {
+    background: var(--white);
+    border: 2px dashed var(--teal);
+    border-radius: var(--radius);
+    padding: 14px;
+    text-align: center;
+    color: var(--teal-dark);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    opacity: 0.7;
+  }
+
+  /* ── TAGLINE BAR ── */
+  .tagline-bar {
+    background: var(--orange);
+    color: var(--white);
+    text-align: center;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    padding: 4px 0;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 380px) {
+    .kpi-val { font-size: 16px; }
+    .detail-label { min-width: 100px; font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TAGLINE BAR -->
+<div class="tagline-bar">More Reads · More Sales · More Success</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <!-- Inline SVG logo (bull reading a book) -->
+    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- Circle background -->
+      <circle cx="50" cy="42" r="36" fill="none" stroke="#00B8B8" stroke-width="3.5"/>
+      <!-- Horns -->
+      <path d="M28 22 Q22 10 30 14" stroke="#1A3347" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M72 22 Q78 10 70 14" stroke="#1A3347" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <!-- Horn tips orange -->
+      <circle cx="22" cy="11" r="3" fill="#F47920"/>
+      <circle cx="78" cy="11" r="3" fill="#F47920"/>
+      <!-- Ears -->
+      <ellipse cx="24" cy="36" rx="7" ry="9" fill="#1A3347"/>
+      <ellipse cx="24" cy="36" rx="4" ry="6" fill="#F47920"/>
+      <ellipse cx="76" cy="36" rx="7" ry="9" fill="#1A3347"/>
+      <ellipse cx="76" cy="36" rx="4" ry="6" fill="#F47920"/>
+      <!-- Head -->
+      <ellipse cx="50" cy="36" rx="24" ry="22" fill="#FFFFFF" stroke="#1A3347" stroke-width="2"/>
+      <!-- Eyes / glasses -->
+      <circle cx="40" cy="30" r="7" fill="none" stroke="#1A3347" stroke-width="2"/>
+      <circle cx="60" cy="30" r="7" fill="none" stroke="#1A3347" stroke-width="2"/>
+      <line x1="47" y1="30" x2="53" y2="30" stroke="#1A3347" stroke-width="2"/>
+      <!-- Pupils -->
+      <circle cx="40" cy="30" r="3" fill="#1A3347"/>
+      <circle cx="60" cy="30" r="3" fill="#1A3347"/>
+      <!-- Snout -->
+      <ellipse cx="50" cy="46" rx="10" ry="7" fill="#FFFFFF" stroke="#1A3347" stroke-width="1.5"/>
+      <circle cx="46" cy="46" r="2" fill="#1A3347"/>
+      <circle cx="54" cy="46" r="2" fill="#1A3347"/>
+      <!-- Book -->
+      <rect x="28" y="54" width="44" height="28" rx="3" fill="#00B8B8" stroke="#1A3347" stroke-width="1.5"/>
+      <line x1="50" y1="54" x2="50" y2="82" stroke="#1A3347" stroke-width="2"/>
+      <line x1="34" y1="62" x2="46" y2="62" stroke="white" stroke-width="1.5" opacity="0.6"/>
+      <line x1="34" y1="68" x2="46" y2="68" stroke="white" stroke-width="1.5" opacity="0.6"/>
+      <line x1="54" y1="62" x2="66" y2="62" stroke="white" stroke-width="1.5" opacity="0.6"/>
+      <line x1="54" y1="68" x2="66" y2="68" stroke="white" stroke-width="1.5" opacity="0.6"/>
+      <!-- Hands -->
+      <circle cx="28" cy="60" r="5" fill="#1A3347"/>
+      <circle cx="72" cy="60" r="5" fill="#1A3347"/>
+    </svg>
+
+    <div class="header-text">
+      <div class="header-title">
+        <span class="title-reada">Reada</span><span class="title-bull">bull</span>
+      </div>
+      <div class="header-sub">Competitor Analysis Dashboard · June 2026</div>
+    </div>
+    <div class="header-badge">Research</div>
+  </div>
+</header>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('overview', this)">Overview</button>
+  <button class="tab-btn" onclick="showTab('bookbub', this)">BookBub Deep Dive</button>
+  <button class="tab-btn" onclick="showTab('scores', this)">Scoring</button>
+  <button class="tab-btn" onclick="showTab('strategy', this)">Strategy</button>
+</div>
+
+<!-- ══════════════════════════════════════════ TAB 1: OVERVIEW -->
+<div id="tab-overview" class="panel active">
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">1</div>
+      <div class="kpi-label">Mapped</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">9</div>
+      <div class="kpi-label">To Add</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val orange">1</div>
+      <div class="kpi-label">High Threat</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      BookBub
+      <span class="badge badge-high">HIGH THREAT</span>
+    </div>
+    <div class="card-body">
+      <div class="detail-row">
+        <div class="detail-label">Founded</div>
+        <div class="detail-val">2012 (14 years)</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Model</div>
+        <div class="detail-val">Two-sided marketplace — free reader acquisition, monetises via author/publisher ad spend</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Target User</div>
+        <div class="detail-val">Authors &amp; Publishers (indie + traditional)</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Platforms</div>
+        <div class="detail-val">
+          <div class="tags">
+            <span class="tag">Amazon</span>
+            <span class="tag">Apple Books</span>
+            <span class="tag">Kobo</span>
+            <span class="tag">B&amp;N</span>
+            <span class="tag">Google Play</span>
+          </div>
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Ad Types</div>
+        <div class="detail-val">Featured Deals (flat-fee email) · BookBub Ads (self-serve PPC)</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Pricing</div>
+        <div class="detail-val">£80–£1,000+ per Featured Deal · £0.40–£0.60 avg CPC</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Reach</div>
+        <div class="detail-val">15M+ verified global subscribers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin: 0 -16px 12px; padding: 7px 16px;">Competitors to Add</div>
+  <div class="placeholder">➕ Competitor 2 — paste URL or brief to add</div>
+  <div class="placeholder">➕ Competitor 3 — paste URL or brief to add</div>
+  <div class="placeholder">➕ Competitor 4 — paste URL or brief to add</div>
+  <div class="placeholder">➕ Competitor 5 — paste URL or brief to add</div>
+  <div class="placeholder">➕ Competitor 6–10 — paste URLs or briefs to add</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ TAB 2: BOOKBUB DEEP DIVE -->
+<div id="tab-bookbub" class="panel">
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">15M+</div>
+      <div class="kpi-label">Subscribers</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">£0.50</div>
+      <div class="kpi-label">Avg CPC</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val orange">26%</div>
+      <div class="kpi-label">Peak CVR</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header teal">How BookBub Works</div>
+    <div class="card-body">
+      <div class="funnel">
+        <div class="funnel-step">💸 Paid Acquisition via Meta + Google Ads</div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step teal">📧 15M+ Subscriber Email List</div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step">📖 Daily Curated Email (genre · device · region)</div>
+        <div class="funnel-arrow">↓</div>
+        <div class="funnel-step orange">🛒 Exit to Amazon / Apple Books / Kobo</div>
+        <div class="funnel-arrow">↑</div>
+        <div class="funnel-step">✍️ Authors bid via BookBub Partners Dashboard</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Institutional Profile</div>
+    <div class="card-body">
+      <div class="detail-row">
+        <div class="detail-label">Founded</div>
+        <div class="detail-val">2012 — 14-year mature business</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Revenue</div>
+        <div class="detail-val">£8M–£28M est. annually — private company</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Core Function</div>
+        <div class="detail-val">Reader aggregator &amp; traffic router — does NOT sell ebooks</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Editorial Gate</div>
+        <div class="detail-val">Rejects ~75% of author submissions → very high subscriber trust</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Reader Mindset</div>
+        <div class="detail-val">High intent — subscribers open email specifically to buy a book now</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Ad Products</div>
+    <div class="card-body">
+      <div class="section-title" style="margin-top:0;">Featured Deals</div>
+      <div class="detail-row">
+        <div class="detail-label">Type</div>
+        <div class="detail-val">Flat-fee curated email placement — requires editorial approval</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Cost</div>
+        <div class="detail-val">~£80 (niche genre) → £1,000+ (Mystery/Thriller)</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Risk</div>
+        <div class="detail-val">Flat fee sunk regardless of conversion</div>
+      </div>
+      <div class="section-title">BookBub Ads (Self-Serve PPC)</div>
+      <div class="detail-row">
+        <div class="detail-label">Type</div>
+        <div class="detail-val">Banner network — no editorial gate required</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Placement</div>
+        <div class="detail-val">Bottom of daily emails + BookBub website</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Avg CPC</div>
+        <div class="detail-val">£0.40–£0.60 (high-intent audience premium)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">Performance Benchmarks</div>
+    <div class="card-body">
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Metric</th><th>Value</th><th>Context</th>
+          </tr>
+          <tr>
+            <td><strong>Avg CPC</strong></td>
+            <td>£0.40–£0.60</td>
+            <td>High-intent power buyers</td>
+          </tr>
+          <tr>
+            <td><strong>Standard CVR</strong></td>
+            <td>1%–5%</td>
+            <td>Full-price / light discount</td>
+          </tr>
+          <tr>
+            <td><strong>Peak CVR</strong></td>
+            <td>20%–26%</td>
+            <td>Free title or box set</td>
+          </tr>
+          <tr>
+            <td><strong>Sales Velocity</strong></td>
+            <td>24–48 hrs</td>
+            <td>Compressed spike, not trickle</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">✅ Strengths</div>
+    <div class="card-body">
+      <ul style="padding-left:18px;line-height:1.9;font-size:13px;">
+        <li>15M+ verified, permission-based subscriber list</li>
+        <li>Extremely high trust &amp; open rates (editorial gate effect)</li>
+        <li>Precision targeting by genre, device &amp; region</li>
+        <li>Instant sales velocity — 24–48 hr traffic spike</li>
+        <li>Featured Deal = author credibility signal</li>
+        <li>Series read-through strategy very effective (Book 1 free → Books 2–4 profit)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">⚠️ Weaknesses</div>
+    <div class="card-body">
+      <ul style="padding-left:18px;line-height:1.9;font-size:13px;">
+        <li>Featured Deals reject ~75% of submissions &amp; cost up to £1,000+</li>
+        <li>Full-price book ROI difficult at £0.40–£0.60 CPC</li>
+        <li>Exit routing only — Amazon/Apple capture the reader, not the author</li>
+        <li>No cross-platform campaign management</li>
+        <li>No analytics dashboard or AMS integration</li>
+        <li>Flat-fee risk: sunk cost if conversion is poor</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ TAB 3: SCORING -->
+<div id="tab-scores" class="panel">
+
+  <div class="insight">
+    <strong>Scoring guide:</strong> 1–10 per dimension (10 = market leader). BookBub pre-assessed. Add competitors as you research them.
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      BookBub
+      <span class="badge badge-teal">34 / 60</span>
+    </div>
+    <div class="card-body">
+      <div class="score-item">
+        <div class="score-meta"><span class="score-name">Audience Reach</span><span class="score-num">10/10</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:100%"></div></div>
+      </div>
+      <div class="score-item">
+        <div class="score-meta"><span class="score-name">Ad Platform Depth</span><span class="score-num">6/10</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:60%"></div></div>
+      </div>
+      <div class="score-item">
+        <div class="score-meta"><span class="score-name">Ease of Use</span><span class="score-num">7/10</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:70%"></div></div>
+      </div>
+      <div class="score-item">
+        <div class="score-meta"><span class="score-name">Pricing Accessibility</span><span class="score-num">4/10</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%"></div></div>
+      </div>
+      <div class="score-item">
+        <div class="score-meta"><span class="score-name">Analytics &amp; Reporting</span><span class="score-num">4/10</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:40%"></div></div>
+      </div>
+      <div class="score-item">
+        <div class="score-meta"><span class="score-name">Multi-Platform Support</span><span class="score-num">3/10</span></div>
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:30%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="placeholder">📊 Competitor 2 — scores will appear here</div>
+  <div class="placeholder">📊 Competitor 3–10 — scores will appear as you add them</div>
+
+</div>
+
+<!-- ══════════════════════════════════════════ TAB 4: STRATEGY -->
+<div id="tab-strategy" class="panel">
+
+  <div class="card">
+    <div class="card-header">🎯 Where Readabull Wins vs BookBub</div>
+    <div class="card-body">
+
+      <div class="win-box">
+        <div class="win-box-label">Gap 1 — No Unified Dashboard</div>
+        <div class="win-box-text">Authors running BookBub Ads AND Amazon Ads have no single place to manage, compare and optimise both. Readabull fills this directly.</div>
+      </div>
+      <div class="win-box">
+        <div class="win-box-label">Gap 2 — Weak Analytics</div>
+        <div class="win-box-text">BookBub gives basic click data only. No cross-platform attribution, no ROI calculator, no series read-through tracking.</div>
+      </div>
+      <div class="win-box">
+        <div class="win-box-label">Gap 3 — Author Loses the Customer</div>
+        <div class="win-box-text">BookBub exit-routes to Amazon, which captures the reader relationship. Readabull helps authors build direct reader relationships alongside ad spend.</div>
+      </div>
+      <div class="win-box">
+        <div class="win-box-label">Gap 4 — High Barrier to Entry</div>
+        <div class="win-box-text">Featured Deals require editorial approval + high flat fees. Authors need guidance on whether to spend there vs BookBub Ads vs AMS — Readabull can advise intelligently.</div>
+      </div>
+      <div class="win-box">
+        <div class="win-box-label">Gap 5 — No Series Strategy Tooling</div>
+        <div class="win-box-text">Book 1 free → read-through strategy is well known but hard to model. A tool that automates this planning would be highly differentiated.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">🏗️ Positioning</div>
+    <div class="card-body">
+      <div class="detail-row">
+        <div class="detail-label">Frame</div>
+        <div class="detail-val">BookBub is an <em>advertising channel</em>. Readabull is the <em>command centre</em> authors use to plan, execute and optimise spend across BookBub, Amazon Ads, Facebook, and beyond.</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Angle</div>
+        <div class="detail-val">"Run smarter ads across every platform — from one place."</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Not competing with</div>
+        <div class="detail-val">BookBub's 15M reader list — position as complementary: "Get more from your BookBub spend."</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showTab(name, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
