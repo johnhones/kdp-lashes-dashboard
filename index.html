@@ -49,7 +49,7 @@
 
   /* SCORE */
   .score-panel { background: var(--navy); border-radius: 6px; padding: 32px; }
-  .score-eyebrow { font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+  .score-eyebrow { font-size: 14px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
   .score-num { font-size: 80px; font-weight: 900; color: var(--teal); line-height: 1; }
   .score-denom { font-size: 28px; color: var(--orange); font-weight: 300; }
   .score-verdict { font-size: 18px; font-weight: 600; color: #fff; margin-top: 8px; }
@@ -196,7 +196,7 @@
 <body>
 
 <div class="mob-bar">
-  <div class="mob-logo"><a href="#score"><img src="readabull-logo.png" alt="Readerbull"></a></div>
+  <div class="mob-logo"><a href="#score"><img src="logo3.png" alt="Readerbull"></a></div>
   <button class="mob-hamburger" onclick="toggleSidebar()" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -204,7 +204,7 @@
 <div class="mob-overlay" id="mob-overlay" onclick="toggleSidebar()"></div>
 
 <div class="sidebar" id="sidebar">
-  <div class="sb-logo"><a href="#score"><img src="readabull-logo.png" alt="Readerbull"></a></div>
+  <div class="sb-logo"><a href="#score"><img src="logo3.png" alt="Readerbull"></a></div>
   <nav class="sb-nav">
     <div class="sb-label">Navigate</div>
     <a href="#score"><i class="ti ti-chart-bar"></i>Overview</a>
@@ -234,45 +234,71 @@
 
 <!-- SCORE + SUMMARY -->
 <div class="g2 mb">
-  <div class="score-panel">
-    <div style="display:flex;gap:24px;align-items:center;margin-bottom:20px;">
-      <div style="flex:1;min-width:0;">
-        <div class="score-eyebrow">Discoverability Score</div>
-        <div><span class="score-num">69</span><span class="score-denom">&thinsp;/ 100</span></div>
-        <div class="score-range" style="background:rgba(244,116,33,.18);border:1px solid rgba(244,116,33,.4);">Good Opportunity</div>
-      </div>
-      <div style="flex-shrink:0;">
-        <img src="https://m.media-amazon.com/images/I/41umDQcUXBL._SL400_.jpg" alt="The Holy Grail of Lashes" style="width:130px;border-radius:6px;box-shadow:0 6px 24px rgba(0,0,0,.5);display:block;">
+  <div style="border-radius:6px;overflow:hidden;border:1px solid var(--border);display:flex;flex-direction:column;">
+    <div style="background:var(--navy);padding:32px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">
+        <div>
+          <div class="score-eyebrow">Discoverability Score</div>
+          <div><span class="score-num" style="color:#00B5AD;">69</span><span class="score-denom">&thinsp;/ 100</span></div>
+          <div class="score-range" style="font-weight:400;background:rgba(244,116,33,.18);border:1px solid rgba(244,116,33,.4);">Good Opportunity</div>
+        </div>
+        <img src="lashes.cover.jpg" alt="The Holy Grail of Lashes by Nicola Vickers" style="width:158px;border-radius:4px;display:block;flex-shrink:0;position:relative;right:84px;filter:brightness(1.5) saturate(1.1);box-shadow:0 8px 32px rgba(0,0,0,.5);" onerror="this.style.display='none';this.nextSibling.style.display='flex'"><div style="display:none;width:158px;height:210px;background:linear-gradient(180deg,#3a1060 0%,#6b2fa0 100%);border-radius:4px;flex-shrink:0;position:relative;right:84px;align-items:center;justify-content:center;flex-direction:column;padding:14px;text-align:center;"><div style="font-size:9px;font-weight:700;color:#e0b4ff;letter-spacing:1px;margin-bottom:8px;">THE</div><div style="font-family:Georgia,serif;font-size:18px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;">HOLY GRAIL</div><div style="font-family:Georgia,serif;font-size:11px;font-style:italic;color:#d4a0f5;margin-bottom:8px;">of Lashes</div><div style="font-size:7px;color:rgba(255,255,255,.6);">Nicola Vickers</div></div>
       </div>
     </div>
+    <div style="background:var(--navy);padding:28px 32px 32px;">
     <div class="bar-row">
       <div class="bar-item">
         <div class="bar-meta"><span class="bar-lbl tip">Demand <span class="tip-q">?</span><span class="tip-box">How much buyer demand exists for this niche on Amazon, based on the number of books actively selling and estimated monthly revenue.</span></span><span class="bar-val">14 / 20</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--teal);"></div></div>
       </div>
       <div class="bar-item">
-        <div class="bar-meta"><span class="bar-lbl tip">Competition <span class="tip-q">?</span><span class="tip-box">How competitive this niche is on Amazon. Lower scores mean less competition and more room to rank. Higher scores mean a more crowded niche.</span></span><span class="bar-val">16 / 20</span></div>
-        <div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--teal);"></div></div>
+        <div class="bar-meta"><span class="bar-lbl tip">Competition <span class="tip-q">?</span><span class="tip-box">How competitive this niche is for paid books. Lower scores mean less competition and more room to rank with ads.</span></span><span class="bar-val">16 / 20</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--orange);"></div></div>
       </div>
       <div class="bar-item">
-        <div class="bar-meta"><span class="bar-lbl tip">Reviews <span class="tip-q">?</span><span class="tip-box">The number of verified customer reviews your book currently has. Reviews build trust and are one of the biggest drivers of Amazon sales conversions.</span></span><span class="bar-val">0 / 20</span></div>
+        <div class="bar-meta"><span class="bar-lbl tip">Reviews <span class="tip-q">?</span><span class="tip-box">Written reviews on your Amazon listing. You have 0 written reviews. Target is 15 before running ads.</span></span><span class="bar-val">0</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange);"></div></div>
       </div>
       <div class="bar-item">
-        <div class="bar-meta"><span class="bar-lbl tip">Growth Potential <span class="tip-q">?</span><span class="tip-box">How ready your book is to expand your catalogue, factoring in current reviews, ad activity, and the number of additional titles possible in this niche.</span></span><span class="bar-val">18 / 20</span></div>
+        <div class="bar-meta"><span class="bar-lbl tip">Ratings <span class="tip-q">?</span><span class="tip-box">Total Amazon count of ratings and written reviews combined, as displayed on your listing. This is the number shoppers see on the search results page.</span></span><span class="bar-val">0</span></div>
+        <div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--orange);"></div></div>
+      </div>
+      <div class="bar-item">
+        <div class="bar-meta"><span class="bar-lbl tip">Growth Potential <span class="tip-q">?</span><span class="tip-box">How positioned your book is to grow, factoring in current reviews, ad activity, and organic ranking position.</span></span><span class="bar-val">18 / 20</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--teal);"></div></div>
       </div>
       <div class="bar-item">
-        <div class="bar-meta"><span class="bar-lbl tip">Amazon Ads <span class="tip-q">?</span><span class="tip-box">An Amazon ad campaign will help you sell more books. We recommend having at least 5 reviews before running ads, as reviews significantly improve conversion rates.</span></span><span class="bar-val">Not Active</span></div>
+        <div class="bar-meta"><span class="bar-lbl tip">Amazon Ads <span class="tip-q">?</span><span class="tip-box">Running Amazon Ads is the highest-leverage action once you have 15 reviews. Ads without reviews waste budget.</span></span><span class="bar-val">Not Active</span></div>
         <div class="bar-track"><div class="bar-fill" style="width:0%;"></div></div>
       </div>
+    </div>
+    </div>
+    <div style="background:var(--navy);padding:28px 32px 32px;flex:1;border-top:1px solid rgba(255,255,255,.06);">
+      <div style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:20px;">Best Seller Rank</div>
+      <div style="margin-bottom:16px;">
+        <div style="font-size:11px;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Your book</div>
+        <div style="font-size:20px;font-weight:700;color:var(--teal);line-height:1;">Not yet ranked</div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-size:11px;color:var(--orange);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Niche average</div>
+        <div style="font-size:32px;font-weight:700;color:rgba(255,255,255,.7);line-height:1;">Data required</div>
+      </div>
+      <div style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7;">No BSR has been assigned yet. This typically means fewer than the minimum sales threshold have been recorded. Once the first sales register, Amazon will assign a rank automatically. Priority: drive initial sales through ARC outreach and personal network before running ads.</div>
     </div>
   </div>
 
   <div style="display:flex;flex-direction:column;gap:20px;">
     <div class="card">
       <div class="card-hdr">Book Summary</div>
-      <p style="font-size:13px;color:var(--mid);line-height:1.7;"><em>The Holy Grail of Lashes</em> is a guide for aspiring and professional lash technicians by a specialist with 15+ years of industry experience. Currently available as Kindle only. Covering foundational lash technique through to advanced mastery and business building.<br><br><strong>The Holy Grail of Lashes sits in a fast-growing niche with genuine commercial potential and very little direct competition.</strong></p>
+      <div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);">
+        <div style="font-size:22px;font-weight:400;color:#111111;line-height:1.35;margin-bottom:4px;">The Holy Grail of Lashes: Advanced Skills, Real Experience</div>
+        <div style="font-size:15px;color:var(--orange);margin-bottom:8px;">by Nicola Vickers</div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:12px;color:var(--mid);">No ratings yet</span>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;"><em>The Holy Grail of Lashes</em> is a guide for aspiring and professional lash technicians by a specialist with 15+ years of industry experience. Currently available as Kindle only. Covering foundational lash technique through to advanced mastery and business building.</p>
+      <p style="font-size:13px;font-weight:700;color:var(--mid);line-height:1.6;">The Holy Grail of Lashes sits in a fast-growing niche with genuine commercial potential and very little direct competition.</p>
       <div class="stat-strip">
         <div class="stat-cell"><div class="stat-v">&lt;10</div><div class="stat-l">Books Selling Well In This Niche</div><div><span style="display:inline-block;margin-top:6px;font-size:11px;background:#e0f7f4;color:#007A75;padding:2px 12px;border-radius:20px;font-weight:700;">✓ Low Competition</span></div></div>
         <div class="stat-cell"><div class="stat-v">~£8,000/mo</div><div class="stat-l">KDP Niche Revenue</div><div><span style="display:inline-block;margin-top:6px;font-size:11px;background:#e0f7f4;color:#007A75;padding:2px 12px;border-radius:20px;font-weight:700;">✓ Real Demand</span></div></div>
@@ -282,7 +308,8 @@
     </div>
     <div class="card">
       <div class="card-hdr">Professional Assessment</div>
-      <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px;">The Holy Grail of Lashes has more commercial potential than the current listing status suggests. The niche is real, the keyword opportunity is significant, and the competition is thin. Once the listing is live and reviewed, you are positioned to be one of very few credentialed authors in a growing and underserved space on Amazon.</p>
+      <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:12px;">The Holy Grail of Lashes has more commercial potential than the current listing suggests. The niche is real, the keyword opportunity is significant, and the competition is thin.</p>
+      <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:14px;">Reviews are the first priority. Build social proof to 15 before running ads. Then tighten the keyword listing and launch a paperback ad campaign. That sequence turns a strong credential into consistent monthly revenue.</p>
       <div style="display:flex;flex-wrap:wrap;gap:6px;">
         <span class="badge b-teal">Evergreen Niche</span>
         <span class="badge b-teal">Strong Credentials</span>
@@ -296,7 +323,7 @@
 
 <!-- KEY FINDING BANNER -->
 <div class="banner mb">
-  <h3 style="color:var(--orange);">Key Finding: Under-Served Keyword with Real Demand</h3>
+  <h3>&#128161; Under-Served Keyword. Real Demand. Zero Competition.</h3>
   <p style="color:#fff;">Research shows fewer than 10 active listings for &ldquo;how to do eyelashes&rdquo; on Amazon yet top books in the adjacent beauty category earn up to &#163;5,948 per month. This is a genuine gap you are positioned to fill, with your existing book and with new titles.</p>
   <div>
     <span class="banner-stat">&lt;10 Active Listings</span>
